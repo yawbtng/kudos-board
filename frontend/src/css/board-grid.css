@@ -1,0 +1,18 @@
+.board-grid {
+    display: flex;
+    grid-auto-flow: row;
+    justify-content: center;
+    flex-flow: row wrap;
+    margin: 0vh 1vw;
+}
+
+/* Define a fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Apply the animation to each card with a delay */
+.board-grid .board {
+  animation: fadeIn 0.5s ease-in; /* Apply the fade-in animation */
+}

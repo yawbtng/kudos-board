@@ -1,0 +1,11 @@
+.sort-buttons {
+    display: flex;
+}
+
+.sort-buttons button {
+    margin: 5px;
+}
+
+.create-board {
+    background-color: lightskyblue;
+}
