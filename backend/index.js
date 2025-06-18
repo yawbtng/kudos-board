@@ -4,6 +4,7 @@ const cors = require('cors')
 app.use(express.json())
 const PORT = process.env.PORT || 3000
 
+
 const boardRoutes = require('./routes/boardRoutes')
 
 app.listen(PORT, () => {
