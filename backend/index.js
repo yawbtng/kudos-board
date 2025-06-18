@@ -7,10 +7,15 @@ const PORT = 3000
 
 const boardRoutes = require('./routes/boardRoutes')
 
+app.get('/', (req, res) => {
+    res.send('KUDOSSSS')
+    console.log(boardRoutes)
+})
+
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`)
 })
 
 app.use(cors())
-app.use('/boards', boardRoutes)
+app.use('/', boardRoutes)
 

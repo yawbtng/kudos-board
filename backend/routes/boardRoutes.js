@@ -5,10 +5,11 @@ const prisma = new PrismaClient()
 
 // board routes
 
-// GET /boards/:boardId
-router.get('/', async (req, res) => {
+// GET /boards/
+router.get('/boards', async (req, res) => {
     const {category, title, recent} = req.query
-    const query = {};       
+    const query = {};      
+    console.log(query)
 
     if (title || category) { 
         query.where = {};
@@ -40,8 +41,11 @@ router.get('/', async (req, res) => {
 });
 
 // GET /boards/:boardId
-router.get('/:boardId', async (req, res) => {
+router.get('/boards/:boardId', async (req, res) => {
     const boardId = parseInt(req.params.boardId);
+    if (Number.isNaN(boardId)) {
+        return res.status(400).json({ error: 'Invalid board id' });
+    }
 
     try {
         const board = await prisma.board.findUnique({ where: { id: boardId } });
@@ -58,7 +62,7 @@ router.get('/:boardId', async (req, res) => {
 });
 
 // POST /boards/new_board
-router.post('/new_board', async (req, res) => {
+router.post('/boards/new_board', async (req, res) => {
   const { title, category, author } = req.body;
 
 
@@ -66,9 +70,11 @@ router.post('/new_board', async (req, res) => {
     return res.status(400).json({ error: 'title, category and author are required' });
   }
 
+  const image = "https://picsum.photos/200/200"
+
   try {
     const newBoard = await prisma.board.create({
-      data: { title, category, author, date: new Date() }
+      data: { title, category, image, author, date: new Date() }
     });
     res.status(201).json(newBoard);
   } catch (err) {
@@ -78,7 +84,7 @@ router.post('/new_board', async (req, res) => {
 });
 
 // DELETE /boards/:boardId
-router.delete('/:boardId', async (req, res) => {       
+router.delete('/boards/:boardId', async (req, res) => {       
   const boardId = parseInt(req.params.boardId);
 
   try {
@@ -98,8 +104,30 @@ router.delete('/:boardId', async (req, res) => {
 });
 
 // card routes
-// GET boards/:boardId/cards
-router.get('/:boardId/cards', async (req, res) => {
+
+// GET all cards /cards
+router.get('/all_cards', async (req, res) => {
+  const { boardId, owner } = req.query;
+  const where = {};
+
+  if (boardId) where.boardId = Number(boardId);
+  if (owner)   where.owner   = owner;
+
+  try {
+    const cards = await prisma.card.findMany({
+      where,                 
+      orderBy: { id: 'asc' } 
+    });
+    res.json(cards);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch cards' });
+  }
+});
+
+
+// GET cards for a board /:boardId/cards
+router.get('/boards/:boardId/cards', async (req, res) => {
   const boardId = parseInt(req.params.boardId);
 
   try {
@@ -115,7 +143,7 @@ router.get('/:boardId/cards', async (req, res) => {
 });
 
 // POST boards/:boardId/cards
-router.post('/:boardId/cards', async (req, res) => {
+router.post('/boards/:boardId/new_card', async (req, res) => {
   const boardId = parseInt(req.params.boardId, 10);
   const { title, description, gif_url, owner } = req.body;
 
@@ -125,6 +153,7 @@ router.post('/:boardId/cards', async (req, res) => {
         title,
         description,
         gif_url,
+        date : new Date(),
         owner,
         vote_cnt: 0,
         board: { connect: { id: boardId } }
@@ -139,26 +168,33 @@ router.post('/:boardId/cards', async (req, res) => {
 
 // PATCH 
 router.patch('/cards/:cardId/like', async (req, res) => {
-  const cardId = parseInt(req.params.cardId, 10);
-  const { increment, set } = req.body;   // choose ONE of these
+  const cardId = parseInt(req.params.cardId, 10);      
+
+  if (Number.isNaN(cardId)) {
+    return res.status(400).json({ error: 'Invalid card id' });
+  }
 
   try {
     const updatedCard = await prisma.card.update({
       where: { id: cardId },
-      data: set !== undefined
-        ? { vote_cnt: set }
-        : { vote_cnt: { increment: increment ?? 1 } }
+      data: { vote_cnt: { increment: 1 } }            
     });
     res.json(updatedCard);
   } catch (err) {
     console.error(err);
-    res.status(400).send('Unable to update like count');
-  }
-})
 
-// DELETE boards/cards/:cardId
+    if (err.code === 'P2025') {
+      return res.status(404).json({ error: 'Card not found' });
+    }
+
+    res.status(500).json({ error: 'Unable to update like count' });
+  }
+});
+
+
+// DELETE cards boards/cards/:cardId
 router.delete('/cards/:cardId', async (req, res) => {
-  const cardId = parseInt(req.params.cardId, 10);
+  const cardId = parseInt(req.params.cardId);
 
   try {
     const deletedCard = await prisma.card.delete({
@@ -170,10 +206,6 @@ router.delete('/cards/:cardId', async (req, res) => {
     res.status(400).send('Unable to delete card');
   }
 });
-
-
-
-
 
 
 module.exports = router
