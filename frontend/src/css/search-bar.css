@@ -9,6 +9,11 @@
     padding: 10px;
 }
 
+.search-bar button:hover {
+    background-color: darkblue;
+    color: white;
+}
+
 #input {
     width: 60%;
     margin: 5px;

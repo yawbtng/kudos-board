@@ -7,7 +7,6 @@ function BoardGrid() {
 
   return (
     <>
-      
       <div className='board-grid'>
         <Board />
         <Board />
@@ -15,10 +14,6 @@ function BoardGrid() {
         <Board />
         <Board />
         <Board />
-      </div>
-
-      <div className='create-board modal'>
-
       </div>
     </>
   )

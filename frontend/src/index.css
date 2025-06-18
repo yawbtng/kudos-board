@@ -48,7 +48,8 @@ button {
   border: 1px solid black;
 }
 button:hover {
-  background-color: #646cff;
+  background-color: darkblue;
+  color: white;
 }
 button:focus,
 button:focus-visible {

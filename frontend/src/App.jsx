@@ -1,13 +1,21 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import SearchBar from './components/SearchBar'
 import SortButtons from './components/Sort'
 import BoardGrid from './components/BoardGrid'
+import CreateBoardModal from './components/CreateBoardModal'
+
 
 function App() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+
+  const handleModal = (e) => {
+    e.preventDefault();
+    setIsModalOpen(true);
+  }
   return (
     <>
       <header>
@@ -23,7 +31,9 @@ function App() {
 
       </header>
       <main>
-        <button className='create-board'>Create a New Board</button>
+        <button className='create-board' onClick={handleModal}>Create a New Board</button>
+
+        {isModalOpen && <CreateBoardModal handleOpen={setIsModalOpen} />}
 
         {/* // search & sort
         // kudos board grid
