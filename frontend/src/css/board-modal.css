@@ -69,7 +69,7 @@
   appearance: none;
 }
 
-/* Submit button */
+/* base button */
 .new-board button {
   margin-top: 12px;
   padding: 12px;
@@ -78,10 +78,21 @@
   border: none;
   font-size: 16px;
   border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease;
 }
 
-.new-board button:hover {
+/* disabled state */
+.new-board button:disabled {
+  background-color: #b5cfe6;   /* lighter */
+  cursor: not-allowed;
+}
+
+/* active (enabled) state */
+.new-board button.active {
+  background-color: lightskyblue;
+  cursor: pointer;
+}
+
+.new-board button.active:hover {
   background-color: darkblue;
 }

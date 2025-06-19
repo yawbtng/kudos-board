@@ -55,6 +55,12 @@ function App() {
     setBoards((prev) => prev.filter((b) => b.id !== id));
   };
 
+
+  // creating a board
+  const handleBoardCreated = (board) => {
+    loadBoards();
+  };
+
   const handleModal = (e) => {
     e.preventDefault();
     setIsModalOpen(true);
@@ -62,7 +68,6 @@ function App() {
   return (
     <>
       <header>
-        {/* // logo and titile */}
         <h1>KUDOS BOARD</h1>
 
         <div className='search-and-sort'>
@@ -76,7 +81,7 @@ function App() {
       <main>
         <button className='create-board' onClick={handleModal}>Create a New Board</button>
 
-        {isModalOpen && <CreateBoardModal handleOpen={setIsModalOpen} />}
+        {isModalOpen && <CreateBoardModal handleOpen={setIsModalOpen} onBoardCreated={handleBoardCreated} />}
 
 
         <BoardGrid boards={boards} onRemoved={handleRemoved}/>
