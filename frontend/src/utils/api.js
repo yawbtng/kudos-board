@@ -1,7 +1,7 @@
 const BASE_URL = import.meta.env.VITE_BASE_URL
 console.log(BASE_URL)
 
-
+// API helper functions
 async function request(path, options = {}) {
   const res = await fetch(BASE_URL + path, {
     headers: { 'Content-Type': 'application/json' },
@@ -20,13 +20,20 @@ async function safeJson(res) {
 }
 
 // BOARD ROUTES
-
 /** GET /boards     (filters: ?title=&category=&recent) */
 export async function getBoards({ title, category, recent } = {}) {
   const params = new URLSearchParams();
-  if (title)     params.append('title', title);
-  if (category)  params.append('category', category);
-  if (recent)    params.append('recent', 'true');
+  if (title) {
+    params.append('title', title);
+  }
+
+  if (category) {
+    params.append('category', category);
+  }
+
+  if (recent) {
+    params.append('recent', 'true');
+  }
 
   return request(`/boards?${params.toString()}`);
 }
@@ -69,7 +76,7 @@ export async function createCard(boardId, new_card) {
 export async function likeCard(cardId) {
   return request(`/cards/${cardId}/like`, {
     method: 'PATCH',
-    body: JSON.stringify({}) // empty body = +1
+    body: JSON.stringify({})
   });
 }
 

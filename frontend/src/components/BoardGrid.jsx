@@ -2,12 +2,12 @@ import '../css/board-grid.css'
 import Board from './Board'
 
 
-const BoardGrid = ({boards}) => {
+const BoardGrid = ({boards, onRemoved}) => {
 
   return (
     <div className='board-grid'>
       {boards.map((board) => (
-        <Board key={board.id} content={board} />
+        <Board key={board.id} content={board} onRemoved={onRemoved}/>
       ))}
     </div>
   )

@@ -50,6 +50,11 @@ function App() {
   }, [searchQuery, sortType])
 
 
+  // removing a board
+  const handleRemoved = (id) => {
+    setBoards((prev) => prev.filter((b) => b.id !== id));
+  };
+
   const handleModal = (e) => {
     e.preventDefault();
     setIsModalOpen(true);
@@ -74,7 +79,7 @@ function App() {
         {isModalOpen && <CreateBoardModal handleOpen={setIsModalOpen} />}
 
 
-        <BoardGrid boards={boards}/>
+        <BoardGrid boards={boards} onRemoved={handleRemoved}/>
 
       </main>
 

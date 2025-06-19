@@ -65,17 +65,26 @@ router.get('/boards/:boardId', async (req, res) => {
 router.post('/boards/new_board', async (req, res) => {
   const { title, category, author } = req.body;
 
-
-  if (!title || !category || !author) {
-    return res.status(400).json({ error: 'title, category and author are required' });
+  if (!title || !category) {
+    return res
+      .status(400)
+      .json({ error: 'title and category are required' });
   }
 
-  const image = "https://picsum.photos/200/200"
+  const image = 'https://picsum.photos/200/200';
 
   try {
-    const newBoard = await prisma.board.create({
-      data: { title, category, image, author, date: new Date() }
-    });
+    const data = {
+      title,
+      category,
+      image,
+      date: new Date()
+    };
+
+
+  data.author = author || 'Anonymous';
+
+  const newBoard = await prisma.board.create({ data });
     res.status(201).json(newBoard);
   } catch (err) {
     console.error(err);
@@ -83,25 +92,37 @@ router.post('/boards/new_board', async (req, res) => {
   }
 });
 
-// DELETE /boards/:boardId
-router.delete('/boards/:boardId', async (req, res) => {       
-  const boardId = parseInt(req.params.boardId);
+
+// DELETE /boards/:boardId  → board + its cards
+router.delete('/boards/:boardId', async (req, res) => {
+  const boardId = Number(req.params.boardId);
+
+  if (Number.isNaN(boardId)) {
+    return res.status(400).json({ error: 'Invalid board id' });
+  }
 
   try {
-    const deletedBoard = await prisma.board.delete({
-      where: { id: boardId }
+    const deletedBoard = await prisma.$transaction(async (tx) => {
+      // remove all cards that belong to this board
+      await tx.card.deleteMany({ where: { boardId } });
+
+      // now delete the board
+      return tx.board.delete({ where: { id: boardId } });
     });
+
     res.json(deletedBoard);
   } catch (err) {
     console.error(err);
 
-   
+    // Board not found
     if (err.code === 'P2025') {
       return res.status(404).json({ error: 'Board not found' });
     }
+
     res.status(500).json({ error: 'Failed to delete board' });
   }
-});
+}); 
+
 
 // card routes
 
@@ -192,7 +213,7 @@ router.patch('/cards/:cardId/like', async (req, res) => {
 });
 
 
-// DELETE cards boards/cards/:cardId
+// DELETE cards /cards/:cardId
 router.delete('/cards/:cardId', async (req, res) => {
   const cardId = parseInt(req.params.cardId);
 

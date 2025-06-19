@@ -18,7 +18,6 @@
 }
 
 .board:hover {
-  cursor: pointer;
   transform: translateY(-5px);
   border: 4px solid gray;
 }
@@ -36,7 +35,6 @@
 .board-buttons button {
   border: 1px solid black
 }
-
 
 .delete {
   background-color: lightskyblue;
