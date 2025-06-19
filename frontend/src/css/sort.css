@@ -9,3 +9,14 @@
 .create-board {
     background-color: lightskyblue;
 }
+
+.button-active {
+    background-color: darkblue;
+    color: white;
+}
+
+
+.sort-buttons button:hover:not(.button-active) { 
+    background-color: lightgray;
+    color: black; 
+}

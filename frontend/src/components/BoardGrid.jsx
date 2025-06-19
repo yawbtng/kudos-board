@@ -1,21 +1,15 @@
-import { useState, useEffect } from 'react'
 import '../css/board-grid.css'
 import Board from './Board'
 
 
-function BoardGrid() {
+const BoardGrid = ({boards}) => {
 
   return (
-    <>
-      <div className='board-grid'>
-        <Board />
-        <Board />
-        <Board />
-        <Board />
-        <Board />
-        <Board />
-      </div>
-    </>
+    <div className='board-grid'>
+      {boards.map((board) => (
+        <Board key={board.id} content={board} />
+      ))}
+    </div>
   )
 }
 

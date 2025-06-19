@@ -16,7 +16,7 @@ router.get('/boards', async (req, res) => {
 
         if (title) {
             query.where.title = {
-                equals: title,       
+                contains: title,       
                 mode: 'insensitive'
             };
         }
