@@ -75,7 +75,7 @@ function BoardPage() {
         </header>
 
         <main>
-            <marquee><h1>{board?.title}</h1></marquee>
+            <marquee><h1 className='board-title'>{board?.title}</h1></marquee>
 
             <button className='create-card' onClick={handleModal}>Create a New Card</button>
 
