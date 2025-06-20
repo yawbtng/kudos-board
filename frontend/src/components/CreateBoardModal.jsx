@@ -3,9 +3,9 @@ import "../css/board-modal.css"
 import { createBoard } from "../utils/api";
 
 const CreateBoardModal = ({handleOpen, onBoardCreated}) => {
-    const [title,     setTitle]     = useState('');
-    const [category,  setCategory]  = useState('');
-    const [author,    setAuthor]    = useState('');
+    const [title, setTitle]     = useState('');
+    const [category, setCategory]  = useState('');
+    const [author, setAuthor]    = useState('');
 
     const isValid = title.trim() !== '' && category !== '';
 

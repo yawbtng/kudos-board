@@ -38,6 +38,15 @@ export async function getBoards({ title, category, recent } = {}) {
   return request(`/boards?${params.toString()}`);
 }
 
+/** GET /boards/:id  → return a single board */
+export async function getBoard(boardId) {
+  if (!boardId && boardId !== 0)
+    throw new Error('getBoard requires a boardId');
+
+  return request(`/boards/${boardId}`);
+}
+
+
 /** POST /boards/new_board */
 export async function createBoard({ title, category, author }) {
   return request('/boards/new_board', {
@@ -54,7 +63,7 @@ export async function deleteBoard(boardId) {
 /* ──────────────── CARD ENDPOINTS ──────────────── */
 
 /** GET /cards */
-export async function getAllCards(boardId) {
+export async function getAllCards() {
   return request(`/all_cards`);
 }
 
@@ -86,3 +95,26 @@ export async function deleteCard(cardId) {
 }
 
 
+// GIPHY API
+const GIPHY_KEY = import.meta.env.VITE_GIPHY_KEY;
+export async function searchGifs(query, limit = 6) {
+  if (!query.trim()) return [];
+
+  const qs = new URLSearchParams({
+    api_key: GIPHY_KEY,
+    q: query,
+    limit,
+    rating: 'g',
+    lang: 'en',
+    bundle: 'messaging_non_clips'
+  });
+
+  const res = await fetch(`https://api.giphy.com/v1/gifs/search?${qs}`);
+  if (!res.ok) throw new Error('Giphy search failed');
+
+  const json = await res.json();
+  return json.data.map((g) => ({
+    id: g.id,
+    url: g.images.fixed_height_small.url
+  }));
+}

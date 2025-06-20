@@ -1,0 +1,42 @@
+.card img {
+    max-width: 100%;
+    border-top-left-radius: 5%;
+    border-top-right-radius: 5%;
+}
+
+.card {
+  flex-direction: column;
+  border: 2px solid lightgray;
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
+  background-color: #f4f4f4;
+  display: flex;
+  margin: 20px 15px;
+  border-radius: 5%;
+  width: clamp(10vw, 20em, 100vw); 
+  transition: transform 0.3s ease-out;
+  transform: scale(0.9)
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  border: 4px solid gray;
+}
+
+.card h3 {
+  margin-bottom: 1px
+}
+
+.card-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin: 5px;
+}
+
+.card-buttons button {
+  border: 1px solid black
+}
+
+.delete {
+  background-color: lightskyblue;
+  color: black;
+}
