@@ -1,11 +1,25 @@
 import '../css/card.css'
-import { deleteCard, likeCard  } from '../utils/api';
+import { deleteCard, likeCard, setCardPin  } from '../utils/api';
 import { useState } from 'react';
 
 
-const Card = ({content, onRemoved}) => {
+const Card = ({content, onRemoved, onPinChange}) => {
     const card = content;
     const [votes, setVotes] = useState(card.vote_cnt);
+    const [pinned, setPinned] = useState(content.pinned);
+
+    const togglePin = async () => {
+        const newVal = !pinned;
+        setPinned(newVal);                         
+        try {
+            await setCardPin(card.id, newVal);
+            onPinChange?.(card.id, newVal);         
+        } catch (err) {
+            console.error(err);
+            setPinned(!newVal);                     
+        }
+    };
+
 
     const handleDelete = async () => {
         try {
@@ -37,7 +51,8 @@ const Card = ({content, onRemoved}) => {
                 <p>{card.description}</p>
                 <img src={card.gif_url} alt={card.title}/>
                 <div className='card-buttons'>
-                    <button className='upvote' onClick={handleUpvote}>▲ Upvote&nbsp;- ({votes})</button>
+                    <button className='upvote' onClick={handleUpvote}>▲&nbsp;- ({votes})</button>
+                    <button onClick={togglePin} className={`pin ${pinned ? 'pinned' : ''}`}>{pinned ? '📌' : 'Pin'}</button>
                     <button className='delete' onClick={handleDelete}>Delete</button>
                 </div>
             </div>

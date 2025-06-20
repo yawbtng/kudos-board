@@ -2,9 +2,8 @@ import { useState, useEffect } from 'react'
 import '../css/board-page.css'
 import CardGrid from '../components/CardGrid'
 import CreateCardModal from '../components/CreateCardModal'
-import { getCards } from '../utils/api'
+import { getCards, getBoard } from '../utils/api'
 import { useParams } from 'react-router-dom';
-import { getBoard } from '../utils/api'
 import { useNavigate } from 'react-router-dom'
 
 
@@ -67,6 +66,13 @@ function BoardPage() {
     const backToHome = () => {
         navigate('/');
     }
+
+    const handlePinChange = (id, pinned) => {
+        setCards((prev) => {
+        const next = prev.map((c) => (c.id === id ? { ...c, pinned } : c));
+        return next.sort((a, b) => (b.pinned - a.pinned) || b.id - a.id);
+    })};
+
     return (
         <>
         <header id="board-header">
@@ -82,7 +88,7 @@ function BoardPage() {
             {isModalOpen && <CreateCardModal boardId={boardId} handleOpen={setIsModalOpen} onCardCreated={handleCardCreated} />}
 
 
-            <CardGrid cards={cards} onRemoved={handleRemoved}/>
+            <CardGrid cards={cards} onRemoved={handleRemoved} onPinChange={handlePinChange}/>
 
         </main>
 

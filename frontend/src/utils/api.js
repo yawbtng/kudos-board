@@ -55,7 +55,7 @@ export async function createBoard({ title, category, author }) {
   });
 }
 
-// utils/api.js
+/** PATCH /boards/:boardId/pin */
 export async function setBoardPin(boardId, pinned) {
   return request(`/boards/${boardId}/pin`, {
     method: 'PATCH',
@@ -94,6 +94,14 @@ export async function likeCard(cardId) {
   return request(`/cards/${cardId}/like`, {
     method: 'PATCH',
     body: JSON.stringify({})
+  });
+}
+
+/** PATCH /cards/:cardId/pin */
+export async function setCardPin(cardId, pinned) {
+  return request(`/cards/${cardId}/pin`, {
+    method: 'PATCH',
+    body: JSON.stringify({ pinned })
   });
 }
 

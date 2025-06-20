@@ -55,7 +55,7 @@ const CreatecardModal = ({handleOpen, onCardCreated}) => {
                 title: title.trim(),
                 description,
                 "gif_url" : gifUrl,
-                owner: owner.trim() || undefined
+                owner: owner.trim() || "anonymous"
             });
 
             onCardCreated?.(newCard);
