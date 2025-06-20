@@ -55,6 +55,14 @@ export async function createBoard({ title, category, author }) {
   });
 }
 
+// utils/api.js
+export async function setBoardPin(boardId, pinned) {
+  return request(`/boards/${boardId}/pin`, {
+    method: 'PATCH',
+    body: JSON.stringify({ pinned })
+  });
+}
+
 /** DELETE /boards/:id */
 export async function deleteBoard(boardId) {
   return request(`/boards/${boardId}`, { method: 'DELETE' });
@@ -74,8 +82,8 @@ export async function getCards(boardId) {
 }
 
 /** POST /boards/:id/new_card */
-export async function createCard(boardId, new_card) {
-  return request(`/boards/${boardId}/cards`, {
+export async function createCard(boardId, data) {
+  return request(`/boards/${boardId}/new_card`, {
     method: 'POST',
     body: JSON.stringify(data) // { title, description, gif_url, owner }
   });

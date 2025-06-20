@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "../css/card-modal.css"
 import { createCard, searchGifs } from "../utils/api";
+import { useParams } from 'react-router-dom';
 
 const CreatecardModal = ({handleOpen, onCardCreated}) => {
     const [title, setTitle] = useState('');
     const [description, setDescription]  = useState('');
     const [gifUrl, setGifUrl] = useState('');
     const [owner, setOwner] = useState("")
+    const { id: boardId } = useParams();
 
      /* gif search */
     const [query, setQuery]   = useState('');
@@ -14,7 +16,7 @@ const CreatecardModal = ({handleOpen, onCardCreated}) => {
     const [loading, setLoad]  = useState(false);
 
 
-    const isValid = title.trim() !== '' && description !== '' && !gifUrl;
+    const isValid = title.trim() !== '' && description !== '' && gifUrl !== "";
 
 
     const handleOutsideClick = (e) => {
@@ -49,10 +51,10 @@ const CreatecardModal = ({handleOpen, onCardCreated}) => {
             return; 
         }
         try {
-            const newCard = await createCard({
+            const newCard = await createCard(boardId, {
                 title: title.trim(),
                 description,
-                gifUrl,
+                "gif_url" : gifUrl,
                 owner: owner.trim() || undefined
             });
 

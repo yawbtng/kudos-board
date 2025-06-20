@@ -36,7 +36,24 @@
   border: 1px solid black
 }
 
+
 .delete {
   background-color: lightskyblue;
   color: black;
 }
+
+/* base pin button */
+.pin {
+  background: lightgray;
+  color: black;
+  cursor: pointer;
+}
+
+
+/* ✅ pinned state */
+.pin.pinned {
+  background: darkblue;
+  color: #fff;
+  border-color: darkblue;
+}
+

@@ -63,9 +63,16 @@ function Home() {
     e.preventDefault();
     setIsModalOpen(true);
   }
+
+  const handlePinChange = (id, pinned) => {
+    setBoards((prev) => {
+    const next = prev.map((b) => (b.id === id ? { ...b, pinned } : b));
+    return next.sort((a, b) => (b.pinned - a.pinned) || new Date(b.date) - new Date(a.date));
+  })};
+
   return (
     <>
-      <header>
+      <header id='home-header'>
         <h1>KUDOS BOARD</h1>
 
         <div className='search-and-sort'>
@@ -82,7 +89,7 @@ function Home() {
         {isModalOpen && <CreateBoardModal handleOpen={setIsModalOpen} onBoardCreated={handleBoardCreated} />}
 
 
-        <BoardGrid boards={boards} onRemoved={handleRemoved}/>
+        <BoardGrid boards={boards} onRemoved={handleRemoved} onPinChange={handlePinChange}/>
 
       </main>
 

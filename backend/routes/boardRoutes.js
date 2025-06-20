@@ -9,7 +9,6 @@ const prisma = new PrismaClient()
 router.get('/boards', async (req, res) => {
     const {category, title, recent} = req.query
     const query = {};      
-    console.log(query)
 
     if (title || category) { 
         query.where = {};
@@ -27,7 +26,10 @@ router.get('/boards', async (req, res) => {
     }
 
     if (recent) {
-        query.orderBy = { date: 'desc' };
+        query.orderBy = [
+          { pinned: 'desc' },
+          { date: 'desc' }
+        ];
         query.take = 6;
     }
 
@@ -71,7 +73,8 @@ router.post('/boards/new_board', async (req, res) => {
       .json({ error: 'title and category are required' });
   }
 
-  const image = 'https://picsum.photos/200/200';
+  let random = Math.floor(Math.random() * 100) + 1;
+  const image = `https://picsum.photos/id/${random}/200/200`;
 
   try {
     const data = {
@@ -91,6 +94,30 @@ router.post('/boards/new_board', async (req, res) => {
     res.status(500).json({ error: 'Failed to create board' });
   }
 });
+
+
+// PATCH /boards/:id/pin   body: { pinned: true|false }
+router.patch('/boards/:id/pin', async (req, res) => {
+  const id = Number(req.params.id);
+  const { pinned } = req.body;                // boolean
+
+  if (Number.isNaN(id) || typeof pinned !== 'boolean')
+    return res.status(400).json({ error: 'Bad request' });
+
+  try {
+    const board = await prisma.board.update({
+      where: { id },
+      data:  { pinned }
+    });
+    res.json(board);
+  } catch (err) {
+    console.error(err);
+    if (err.code === 'P2025')
+      return res.status(404).json({ error: 'Board not found' });
+    res.status(500).json({ error: 'Failed to update board' });
+  }
+});
+
 
 
 // DELETE /boards/:boardId  → board + its cards

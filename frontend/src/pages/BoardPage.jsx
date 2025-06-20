@@ -69,13 +69,13 @@ function BoardPage() {
     }
     return (
         <>
-        <header className="board-header">
+        <header id="board-header">
             <span className="back-arrow" onClick={backToHome}>&larr;</span>
             <h1>KUDOS BOARD</h1>
         </header>
 
         <main>
-            <h3>{board?.title}</h3>
+            <marquee><h1>{board?.title}</h1></marquee>
 
             <button className='create-card' onClick={handleModal}>Create a New Card</button>
 
