@@ -84,7 +84,7 @@ function Home() {
 
       </header>
       <main>
-        <button className='create-board' onClick={handleModal}>Create a New Board</button>
+        <button className='create-board creating' onClick={handleModal}>Create a New Board</button>
 
         {isModalOpen && <CreateBoardModal handleOpen={setIsModalOpen} onBoardCreated={handleBoardCreated} />}
 

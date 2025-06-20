@@ -1,0 +1,39 @@
+:root {
+  /* surfaces */
+  --bg:           #ffffff;   /* page background */
+  --header-bg:    #94cdfb;   /* light sky-blue top bar */
+  --footer-bg:    #94cdfb;
+  --card-bg:      #f5f7fa;   /* board / card background */
+  --border:       #d1d9e6;   /* light gray border */
+
+  /* text */
+  --text:         #182029;   /* primary text */
+
+  --board-title: purple;
+
+  --create-bg: lightskyblue;
+  --create-color: black;
+
+  --create-bg-hover: darkblue;
+  --create-color-hover: white;
+}
+
+body.dark {
+  /* surfaces */
+  --bg:           #12171d;
+  --header-bg:    #0b3b5b;
+  --footer-bg:    #0b3b5b;
+  --card-bg:      #1d242b;
+  --border:       #2d3741;
+
+  /* text */
+  --text:         #e8edf2;
+
+  --board-title: darkorange;
+
+  --create-bg: darkblue;
+  --create-color: white;
+
+  --create-bg-hover: lightskyblue;
+  --create-color-hover: black;
+}

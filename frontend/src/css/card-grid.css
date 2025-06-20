@@ -3,7 +3,7 @@
     grid-auto-flow: row;
     justify-content: center;
     flex-flow: row wrap;
-    margin: 0vh 1vw;
+    padding: 0vh 1vw;
 }
 
 /* Define a fade-in animation */

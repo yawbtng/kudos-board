@@ -77,7 +77,7 @@ function BoardPage() {
         <main>
             <marquee><h1 className='board-title'>{board?.title}</h1></marquee>
 
-            <button className='create-card' onClick={handleModal}>Create a New Card</button>
+            <button className='create-card creating' onClick={handleModal}>Create a New Card</button>
 
             {isModalOpen && <CreateCardModal boardId={boardId} handleOpen={setIsModalOpen} onCardCreated={handleCardCreated} />}
 
