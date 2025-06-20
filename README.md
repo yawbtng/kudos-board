@@ -5,7 +5,7 @@ Meta U Project 3
 
 ## Unit Assignment: Kudos Board
 
-Submitted by: **NAME**
+Submitted by: **YAW**
 
 Deployed Application (**required**): [Kudos Board Deployed Site](https://kudos-board-frontend-pfah.onrender.com/)
 
