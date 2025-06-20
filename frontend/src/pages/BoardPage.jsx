@@ -70,7 +70,7 @@ function BoardPage() {
     const handlePinChange = (id, pinned) => {
         setCards((prev) => {
         const next = prev.map((c) => (c.id === id ? { ...c, pinned } : c));
-        return next.sort((a, b) => (b.pinned - a.pinned) || b.id - a.id);
+        return next.sort((a, b) => (b.pinned - a.pinned) || a.id - b.id);
     })};
 
     return (
