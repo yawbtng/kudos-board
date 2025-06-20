@@ -31,6 +31,11 @@ router.get('/boards', async (req, res) => {
           { date: 'desc' }
         ];
         query.take = 6;
+    } else {
+      query.orderBy = [
+        { pinned: 'desc' },
+        { id: 'asc'}
+      ]
     }
 
     try {
@@ -181,7 +186,10 @@ router.get('/boards/:boardId/cards', async (req, res) => {
   try {
     const cards = await prisma.card.findMany({
       where: { boardId },
-      orderBy: { id: 'asc' }   
+      orderBy : [
+        { pinned: 'desc' },
+        { id: 'asc'}
+      ]   
     });
     res.json(cards);
   } catch (err) {
@@ -236,6 +244,28 @@ router.patch('/cards/:cardId/like', async (req, res) => {
     }
 
     res.status(500).json({ error: 'Unable to update like count' });
+  }
+});
+
+// PATCH /boards/:id/pin   body: { pinned: true|false }
+router.patch('/cards/:id/pin', async (req, res) => {
+  const id = Number(req.params.id);
+  const { pinned } = req.body;                
+
+  if (Number.isNaN(id) || typeof pinned !== 'boolean')
+    return res.status(400).json({ error: 'Bad request' });
+
+  try {
+    const card = await prisma.card.update({
+      where: { id },
+      data:  { pinned }
+    });
+    res.json(card);
+  } catch (err) {
+    console.error(err);
+    if (err.code === 'P2025')
+      return res.status(404).json({ error: 'Card not found' });
+    res.status(500).json({ error: 'Failed to update card' });
   }
 });
 

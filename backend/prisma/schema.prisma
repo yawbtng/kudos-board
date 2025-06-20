@@ -31,6 +31,7 @@ model Card {
   gif_url String
   owner String
   vote_cnt Int
+  pinned Boolean @default(false)
   boardId Int
   board Board @relation(fields: [boardId], references: [id])
   date DateTime 
